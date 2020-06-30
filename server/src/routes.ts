@@ -16,9 +16,6 @@ routes.post('/users', userController.create)
 routes.get('/tools', toolsController.index)
 routes.post('/tools', toolsController.create)
 
-routes.get('/orders', ServiceOrderController.index)
-routes.post('/orders', ServiceOrderController.create)
 
-routes.post('/log-in', loginController.login);
 
 export default routes
