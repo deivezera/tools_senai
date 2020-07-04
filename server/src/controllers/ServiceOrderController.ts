@@ -7,20 +7,27 @@ class ServiceOrderController {
             price,
             nf,
             description,
+            toolId,
         } = req.body
         const {
-            id
+            id,
         } = req.headers
     
         const trx = await knex.transaction();
-        const tool = {
+        const service = {
             price,
             nf,
             description,
+            user_id: trx('users').where({
+                id
+            }).select('id'),
+            tool_id: trx('tools').where({
+                toolId
+            })
         };
-        await trx('tools').insert(tool)
+        await trx('service').insert(service)
     
-        return res.json(tool)
+        return res.json(service)
     }
 }
 

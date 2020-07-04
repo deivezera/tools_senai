@@ -1,17 +1,34 @@
 import {Request, Response} from 'express'
 import knex from '../database/connection'
+import CryptoJS from 'crypto-js';
 
 class ServiceOrderController {
     async login(req: Request, res: Response) {
-        //req.body = login/email, senha
-        // senha vai virar hash
-        // email/ senha vai ser usado como parametro de busca no banco de dados para checar se existe aquele usuário
-        const token = {
-            token: "",
-            expire: ""
+        const {
+            email,
+            password,
+        } = req.body
+        const hash = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64)
+        const userData = {
+            email: knex('users').where({
+                email
+            }),
+            password: knex('users').where({
+                hash
+            })
         }
-        //gerar token e data de expiração do token +o- 10min de expiração
-        return
+        const token = {
+            token: `${Math.random()}.F1284178989#()#&*$&¨@*.${Math.random}`,
+            expire: new Date
+        }
+        const err = {
+            error: "E-mail ou senha não encontrados"
+        }
+        if(userData.password && userData.email){
+            return res.json(token)
+        }else{
+            return res.json(err)
+        }        
     }
 }
 

@@ -9,12 +9,11 @@ class ToolsController {
             description,
             price,
             id, //ID DO USUÁRIO
-            tool//ID DA PEÇA
         } = req.body
         
     
         const trx = await knex.transaction();
-        const service = {
+        const tools = {
             image,
             title,
             description,
@@ -22,13 +21,10 @@ class ToolsController {
             user_id: trx('users').where({
                 id
             }).select('id'),
-            tool_id: trx('tools').where({
-                tool
-            })
         };
-        await trx('tools').insert(service)
+        await trx('tools').insert(tools)
     
-        return res.json(service)
+        return res.json(tools)
     }
     async index(req: Request,res:Response) {
         const tools = await knex('tools').select('*');
